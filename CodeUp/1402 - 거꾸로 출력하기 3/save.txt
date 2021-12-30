@@ -1,0 +1,102 @@
+#include <Pixy2.h>
+
+Pixy2 pixy;
+
+int cnt = 1;
+
+const uint8_t  moveStop[6] = {0xff, 0x55, 0x00, 0xff, 0x00, 0xff}; // 255 85 0 255 0 255 --> 1,2,5,6번째 수는 고정, 3번째 수가 실질적인 키값, 4번째 수는 3번째 수의 1의 보수
+const uint8_t* moveStop_ptr = moveStop;
+// U: Forward
+const uint8_t  moveForward[6] = {0xff, 0x55, 0x01, 0xfe, 0x00, 0xff};
+const uint8_t* moveForward_ptr = moveForward;
+// U+1: 1차(PickUp) 들고 Forward
+const uint8_t  moveForwardFirst[6] = {0xff, 0x55, 0x11, 0xee, 0x00, 0xff};
+const uint8_t* moveForwardFirst_ptr = moveForwardFirst;
+// D+1: 2차(Lift) 들고 Forward
+const uint8_t  moveForwardSecond[6] = {0xff, 0x55, 0x12, 0xed, 0x00, 0xff};
+const uint8_t* moveForwardSecond_ptr = moveForwardSecond;
+// 4: 역도 잡기(PickUp)
+const uint8_t  upFirst[6] = {0xff, 0x55, 0x80, 0x7f, 0x00, 0xff};
+const uint8_t* upFirst_ptr = upFirst;
+// 2: 역도 들기(Lift)
+const uint8_t  upSecond[6] = {0xff, 0x55, 0x20, 0xdf, 0x00, 0xff};
+const uint8_t* upSecond_ptr = upSecond;
+// R+3: 미세 TurnRight
+const uint8_t  RightTurn[6] = {0xff, 0x55, 0x48, 0xb7, 0x00, 0xff};
+const uint8_t* RightTurn_ptr = RightTurn;
+// L+3: 미세 TurnLeft
+const uint8_t  LeftTurn[6] = {0xff, 0x55, 0x44, 0xbb, 0x00, 0xff};
+const uint8_t* LeftTurn_ptr = LeftTurn;
+// R+1: 들고 미세 TurnRight
+const uint8_t  RightTurnFirst[6] = {0xff, 0x55, 0x18, 0xe7, 0x00, 0xff};
+const uint8_t* RightTurnFirst_ptr = RightTurnFirst;
+// L+1: 들고 미세 TurnLeft
+const uint8_t  LeftTurnFirst[6] = {0xff, 0x55, 0x14, 0xeb, 0x00, 0xff};
+const uint8_t* LeftTurnFirst_ptr = LeftTurnFirst;
+
+void setup() {
+  pixy.init();
+  Serial.begin(57600);
+  Serial.write(moveStop_ptr,6);
+  delay(2000);
+  Serial.write(moveForward_ptr,6);
+  delay(1500);
+}
+
+void loop() {
+  pixy.ccc.getBlocks();
+  if(pixy.ccc.numBlocks) {
+    for(int i = 0; i < pixy.ccc.numBlocks; i++) {
+      pixy.ccc.blocks[i].print();
+      if(cnt == 1 && pixy.ccc.blocks[i].m_y > 150) {
+        cnt = 2;
+        Serial.write(moveStop_ptr,6);
+        delay(4000);
+        Serial.write(upFirst_ptr,6);
+        delay(100);
+        Serial.write(moveStop_ptr,6);
+        delay(4000);
+        Serial.write(moveStop_ptr,6);
+        delay(2000);
+        Serial.write(moveForwardFirst_ptr,6);
+        delay(6000);
+        cnt = 3;
+        Serial.write(moveStop_ptr,6);
+        delay(4000);
+        Serial.write(moveStop_ptr,6);
+        delay(2000);
+        Serial.write(upSecond_ptr,6);
+        delay(100);
+        Serial.write(moveStop_ptr,6);
+        delay(4000);
+        Serial.write(moveForwardSecond_ptr,6);
+        delay(2000);
+      }
+      else if(cnt == 1 && pixy.ccc.blocks[i].m_y < 150) {
+        Serial.write(moveForward_ptr,6);
+        delay(100);
+      }/*
+      else if(cnt == 2 && pixy.ccc.blocks[i].m_y < 170) {
+        Serial.write(moveForwardFirst_ptr,6);
+        delay(100);
+      }*/
+      else if(cnt == 3) {
+        Serial.write(moveForwardSecond_ptr,6);
+        delay(100);
+      }
+    }
+  }
+  else {
+    if(cnt == 1) {
+      Serial.write(moveForward_ptr,6);
+      delay(100);
+    }/*
+    else if(cnt == 2) {
+      Serial.write(moveForwardFirst_ptr,6);
+      delay(100);
+    }*/
+    else if(cnt == 3) {
+      Serial.write(moveForwardSecond_ptr,6);
+    }
+  }
+}  

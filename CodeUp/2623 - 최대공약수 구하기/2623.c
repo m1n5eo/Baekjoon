@@ -1,0 +1,18 @@
+#include <stdio.h>
+
+int main()
+{
+    int n, m, t;
+    scanf("%d %d", &n, &m);
+    if(n < m) {
+        t = n;
+        n = m;
+        m = t;
+    }
+    for(int i = n; i >= 1; i--) {
+        if(n%i == 0 && m % i == 0) {
+            printf("%d", i);
+            return 0;
+        }
+    }
+}
