@@ -1,8 +1,8 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
 
 int main() {
     int n, m;
-    scanf("%d %d", &n, &m);
-    printf("%d\n%d\n%d\n%d\n%d", n+m, n-m, n*m, n/m, n%m);
+    cin >> n >> m;
+    cout << n+m << "\n" << n-m << "\n" << n*m << "\n" << n/m << "\n" << n%m;
 }
