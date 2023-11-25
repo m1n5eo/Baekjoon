@@ -1,3 +1,2 @@
-int litres(double time) {
-    return (int)(time/2);
-}
+def litres(time):
+    return int(time/2)
