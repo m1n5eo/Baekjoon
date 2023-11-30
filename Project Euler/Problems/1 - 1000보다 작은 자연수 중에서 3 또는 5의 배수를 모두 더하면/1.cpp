@@ -2,9 +2,9 @@
 using namespace std;
 
 int main() {
-    int sum = 0;
+    int res = 0;
     for(int i = 2; i < 1000; i++) {
-        if(i%3 == 0 || i%5 == 0) sum += i;
+        if(i%3 == 0 || i%5 == 0) res += i;
     }
-    cout << sum;
+    cout << res;
 }
