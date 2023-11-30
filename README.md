@@ -4,4 +4,4 @@
 3. [Codeforces](https://codeforces.com/)
 4. [Codewars](https://codewars.com/)
 5. [Programmers](https://programmers.co.kr/)
-6. [Project Euler](https://euler.synap.co.kr/)
+6. [Project Euler](https://projecteuler.net/)
