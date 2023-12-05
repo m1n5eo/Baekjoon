@@ -14,21 +14,21 @@ int main() {
     int ja = a+n, mo = k;
     int temp = ja>mo? mo:ja;
 
-    priority_queue<int> sosu;
+    priority_queue<int> pq;
     for(int i = 1; i*i < temp; i++) {
         if(temp%i == 0) {
-            sosu.push(i);
-            sosu.push(temp/i);
+            pq.push(i);
+            pq.push(temp/i);
         }
     }
 
-    int sosuSize = sosu.size();
-    for(int i = 0; i < sosuSize; i++) {
-        if(ja%sosu.top() == 0 && mo%sosu.top() == 0) {
-            ja = ja/sosu.top();
-            mo = mo/sosu.top();
+    int pqSize = pq.size();
+    for(int i = 0; i < pqSize; i++) {
+        if(ja%pq.top() == 0 && mo%pq.top() == 0) {
+            ja = ja/pq.top();
+            mo = mo/pq.top();
         }
-        sosu.pop();
+        pq.pop();
     }
 
     cout << ja << " " << mo;
