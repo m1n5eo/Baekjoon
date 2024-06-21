@@ -29,7 +29,7 @@ int main() {
         for(int j = i+1; j < n; j++) {
             if(arr[i] < arr[j]) {
                 if(LIS[i]+1 > LIS[j]) {
-                    LIS[j] = LIS[i]+1;
+                    LIS[j] = LIS[i] + 1;
                 }
             }
         }
