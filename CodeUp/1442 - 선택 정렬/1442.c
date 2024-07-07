@@ -1,1 +1,0 @@
-if(a[j] < a[min]) min = j;
