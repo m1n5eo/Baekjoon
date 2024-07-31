@@ -1,47 +1,63 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 using namespace std;
 
-#define mod 1000000007
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
+#define lli long long int
+#define MOD 1000000007
+#define MAX 1111111
 
-long long int n, m, k, a, b, sw;
-long long int arr[1234567], tree[4*1234567];
+lli n, m, k;
+vector<lli> v(MAX, 0), tree(MAX*4, 0);
 
-long long int init(long long int start, int long long end, long long int node) {
-    if(start == end) return tree[node] = arr[start]%mod;
-    long long int mid = (start+end)/2;
-    return tree[node] = (init(start, mid, node*2)*init(mid+1, end, node*2+1))%mod;
+lli init(lli start, lli end, lli node) {
+    if(start == end) return tree[node] = v[start];
+
+    lli mid = (start+end)/2;
+    return tree[node] = (init(start, mid, node*2) * init(mid+1, end, node*2+1)) % MOD;
 }
 
-long long int segment(long long int start, long long int end, long long int node, long long int left, long long int right) {
+lli segment(lli start, lli end, lli node, lli left, lli right) {
     if(left > end || right < start) return 1;
-    if(left <= start && end <= right) return tree[node]%mod;
-    long long int mid = (start+end)/2;
-    return (segment(start, mid, node*2, left, right)*segment(mid+1, end, node*2+1, left, right))%mod;
+    else if(left <= start && end <= right) return tree[node];
+
+    lli mid = (start+end)/2;
+    return (segment(start, mid, node*2, left, right) * segment(mid+1, end, node*2+1, left, right)) % MOD;
 }
 
-long long int update(long long int start, long long int end, long long int node, long long int index, long long int dif) {
-    if(index < start || index > end) return tree[node]%mod;
-    if(start == end) return tree[node] = dif%mod;
-    long long int mid = (start+end)/2;
-    return tree[node] = (update(start, mid, node*2, index, dif)*update(mid+1, end, node*2+1, index, dif))%mod;
+lli update(lli start, lli end, lli node, lli index, lli change) {
+    if(index < start || index > end) return tree[node];
+    if(start == end) {
+        if(v[index] != 0) return tree[node] = (tree[node] / v[index] * change) % MOD;
+        else return tree[node] = change;
+    }
+
+    lli mid = (start+end)/2;
+    return tree[node] = (update(start, mid, node*2, index, change) * update(mid+1, end, node*2+1, index, change)) % MOD;
 }
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(NULL); cout.tie(NULL);
+    FASTIO
 
     cin >> n >> m >> k;
-    for(long long int i = 0; i < n; i++) cin >> arr[i];
+
+    for(lli i = 0; i < n; i++) {
+        cin >> v[i];
+    }
+
     init(0, n-1, 1);
-    for(long long int i = 0; i < m+k; i++) {
-        cin >> sw >> a >> b;
-        if(sw == 1) {
-            arr[a-1] = b;
+
+    for(lli i = 0; i < m+k; i++) {
+        lli mode, a, b;
+
+        cin >> mode >> a >> b;
+
+        if(mode == 1) {
             update(0, n-1, 1, a-1, b);
+            v[a-1] = b;
         }
-        else if(sw == 2) {
-            if(a > b) swap(a, b);
-            cout << segment(0, n-1, 1, a-1, b-1) << '\n';
+        else if(mode == 2) {
+            cout << segment(0, n-1, 1, a-1, b-1) << "\n";
         }
     }
 }
