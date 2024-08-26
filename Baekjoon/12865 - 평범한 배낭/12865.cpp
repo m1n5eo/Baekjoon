@@ -1,24 +1,29 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 using namespace std;
 
-int w[101], v[101], dp[101][100001];
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
 
 int main() {
-    int n, k, maxx = -1234567890;
-    scanf("%d %d", &n, &k);
+    FASTIO
+
+    int n, k;
+
+    cin >> n >> k;
+    
+    vector<vector<int>> dp(n+1, vector<int>(k+1, 0));
+    vector<int> weight(n+1, 0), value(n+1, 0);
+
     for(int i = 1; i <= n; i++) {
-        scanf("%d %d", &w[i], &v[i]);
+        cin >> weight[i] >> value[i];
     }
+
     for(int i = 1; i <= n; i++) {
-        for(int j = 1; j <= k; j++) {
-            dp[i][j] = max(dp[i-1][j], dp[i][j]);
-            if(j >= w[i]) {
-                dp[i][j] = max(dp[i-1][j], dp[i-1][j-w[i]]+v[i]);
-            }
+        for(int w = 1; w <= k; w++) {
+            if(weight[i] <= w) dp[i][w] = max(dp[i-1][w], dp[i-1][w-weight[i]] + value[i]);
+            else dp[i][w] = dp[i-1][w];
         }
     }
-    for(int i = 1; i <= n; i++) {
-        if(dp[i][k] > maxx) maxx = dp[i][k];
-    }
-    printf("%d", maxx);
+
+    cout << dp[n][k];
 }
