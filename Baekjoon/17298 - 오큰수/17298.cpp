@@ -1,30 +1,34 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <stack>
 using namespace std;
 
-int n, temp;
-stack<int> s;
-vector<int> v;
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
+#define MAX 1111111
 
 int main() {
-    cin.tie(NULL);
-    cin.sync_with_stdio(false);
+    FASTIO
+
+    int n, temp;
+    vector<int> vec, result(MAX, -1);
+    stack<int> st;
 
     cin >> n;
+    
     for(int i = 0; i < n; i++) {
         cin >> temp;
-        v.push_back(temp);
+        vec.push_back(temp);
     }
-
-    vector<int> print(n, -1);
 
     for(int i = 0; i < n; i++) {
-        while(s.size() && v[s.top()] < v[i]) {
-            print[s.top()] = v[i];
-            s.pop();
+        while(st.size() && vec[st.top()] < vec[i]) {
+            result[st.top()] = vec[i];
+            st.pop();
         }
-        s.push(i);
+        st.push(i);
     }
 
-    for(int i = 0; i < n; i++) cout << print[i] << " ";
-    cout << endl;
+    for(int i = 0; i < n; i++) {
+        cout << result[i] << " ";
+    }
 }
