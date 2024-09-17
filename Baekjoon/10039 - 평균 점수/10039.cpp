@@ -1,12 +1,19 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
 
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
+
 int main() {
-    int n, sum = 0;
-    for(int i = 0; i < 5; i++) {
-        scanf("%d", &n);
-        if(n < 40) n = 40;
-        sum = sum + n;
+    FASTIO
+
+    int n = 5, num, sum = 0;
+
+    for(int _ = 0; _ < n; _++) {
+        cin >> num;
+
+        if(num < 40) num = 40;
+        sum += num;
     }
-    printf("%d", sum/5);
+
+    cout << sum/n;
 }
