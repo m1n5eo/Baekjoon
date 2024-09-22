@@ -1,60 +1,64 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <queue>
 using namespace std;
 
-#define fi first
-#define se second
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
 
-int n, m, h;
-int arr[101][101][101], days[101][101][101];
-int dx[6] = {-1, 1, 0, 0, 0, 0},
-    dy[6] = {0, 0, -1, 1, 0, 0},
-    dz[6] = {0, 0, 0, 0, -1, 1};
-queue<pair<pair<int,int>,int>> q;
+struct type {
+    int x, y, z;
+};
 
 int main() {
-    scanf("%d %d %d", &m, &n, &h);
+    FASTIO
+
+    int n, m, h, before = 0, after = 0;
+    int dx[6] = {-1, 1, 0, 0, 0, 0},
+        dy[6] = {0, 0, -1, 1, 0, 0},
+        dz[6] = {0, 0, 0, 0, -1, 1};
+
+    cin >> m >> n >> h;
+
+    vector<vector<vector<int>>> box(n+1, vector<vector<int>>(m+1, vector<int>(h+1, 0)));
+    vector<vector<vector<bool>>> visit(n+1, vector<vector<bool>>(m+1, vector<bool>(h+1, false)));
+    queue<type> bfs;
+
     for(int i = 0; i < h; i++) {
         for(int j = 0; j < n; j++) {
             for(int k = 0; k < m; k++) {
-                scanf("%d", &arr[j][k][i]);
-                if(arr[j][k][i] == 1) {
-                    q.push({{j, k}, i});
-                    days[j][k][i] = 1;
+                cin >> box[j][k][i];
+
+                if(box[j][k][i] == 0) before += 1;
+                else if(box[j][k][i] == 1) {
+                    bfs.push({j, k, i});
+                    visit[j][k][i] = true;
                 }
             }
         }
     }
 
-    while(!q.empty()) {
-        int x = q.front().fi.fi;
-        int y = q.front().fi.se;
-        int z = q.front().se;
-        q.pop();
-        for(int k = 0; k < 6; k++) {
-            int nx = x+dx[k];
-            int ny = y+dy[k];
-            int nz = z+dz[k];
-            if(nx >= 0 && nx < n && ny >= 0 && ny < m && nz >= 0 && nz < h) {
-                if(arr[nx][ny][nz] == 0) {
-                    arr[nx][ny][nz] = 1;
-                    days[nx][ny][nz] = days[x][y][z]+1;
-                    q.push({{nx, ny}, nz});
+    int result = 0;
+
+    while(bfs.size()) {
+        int bfs_size = bfs.size();
+        result += 1;
+
+        for(int _ = 0; _ < bfs_size; _++) {
+            type now = bfs.front();
+            bfs.pop();
+
+            for(int k = 0; k < 6; k++) {
+                type next = {now.x+dx[k], now.y+dy[k], now.z+dz[k]};
+
+                if(0 <= next.x && next.x < n && 0 <= next.y && next.y < m && 0 <= next.z && next.z < h && box[next.x][next.y][next.z] == 0) {
+                    bfs.push(next);
+                    box[next.x][next.y][next.z] = 1;
+                    after += 1;
                 }
             }
         }
     }
 
-    int maxx = -1234567890;
-    for(int i = 0; i < h; i++) {
-        for(int j = 0; j < n; j++) {
-            for(int k = 0; k < m; k++) {
-                maxx = maxx>days[j][k][i]? maxx:days[j][k][i];
-                if(arr[j][k][i] == 0) {
-                    printf("-1");
-                    return 0;
-                }
-            }
-        }
-    }
-    printf("%d", maxx-1);
+    if(before == after) cout << result-1;
+    else cout << -1;
 }
