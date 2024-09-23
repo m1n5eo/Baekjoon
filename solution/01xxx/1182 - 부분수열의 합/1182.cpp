@@ -1,21 +1,35 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 using namespace std;
 
-int n, s, cnt = 0;
-int arr[22];
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
 
-void f(int idx, int sum) {
-    sum = sum+arr[idx];
-    if (idx >= n) return;
-    else if (sum == s) cnt++;
+int result;
 
-    f(idx+1, sum);
-    f(idx+1, sum-arr[idx]);
+void func(int idx, int sum, int n, int s, vector<int> v) {
+    sum += v[idx];
+
+    if(idx >= n) return;
+    else if(sum == s) result += 1;
+
+    func(idx+1, sum, n, s, v);
+    func(idx+1, sum-v[idx], n, s, v);
 }
 
 int main() {
-    scanf("%d %d", &n, &s);
-    for(int i = 0; i < n; i++) scanf("%d", &arr[i]);
-    f(0, 0);
-    printf("%d", cnt);
+    FASTIO
+    
+    int n, s, temp;
+    vector<int> v;
+
+    cin >> n >> s;
+
+    for(int i = 0; i < n; i++) {
+        cin >> temp;
+        v.push_back(temp);
+    }
+
+    func(0, 0, n, s, v);
+
+    cout << result;
 }
