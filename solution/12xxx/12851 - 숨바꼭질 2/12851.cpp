@@ -1,49 +1,47 @@
-#include <bits/stdc++.h> ///bj.1697
+#include <iostream>
+#include <vector>
+#include <queue>
 using namespace std;
 
-int n, k, immi = 1234567890;
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
+#define MAX 222222
+
 int sec[222222], chk[222222], cnt[222222];
 
-queue <int> q;
-
 int main() {
-    scanf("%d %d", &n, &k);
-    q.push(n);
+    int n, k;
+
+    cin >> n >> k;
+
+    vector<int> sec(MAX, 0), cnt(MAX, 0);
+    vector<bool> check(MAX, false);
+    queue<int> bfs;
+
+    check[n] = true;
     sec[n] = 0;
-    chk[n] = 1;
     cnt[n] = 1;
-    while(q.empty() == 0) {
-        int pos = q.front();
-        q.pop();
-        if(pos-1 >= 0) {
-            if(chk[pos-1] == 0){
-                chk[pos-1] = 1;
-                sec[pos-1] = sec[pos]+1;
-                q.push(pos-1);
-                cnt[pos-1] = cnt[pos];
+    bfs.push(n);
+
+    while(bfs.size()) {
+        int now = bfs.front();
+        bfs.pop();
+
+        vector<int> next = {now-1, now+1, now*2};
+
+        for(int k = 0; k < 3; k++) {
+            if(0 <= next[k] && next[k] <= 100000) {
+                if(check[next[k]] == false) {
+                    check[next[k]] = true;
+                    sec[next[k]] = sec[now]+1;
+                    cnt[next[k]] = cnt[now];
+                    bfs.push(next[k]);
+                }
+                else if(sec[next[k]] == sec[now]+1) {
+                    cnt[next[k]] += cnt[now];
+                }
             }
-            else if(sec[pos-1] == sec[pos]+1) cnt[pos-1] += cnt[pos];
-        }
-        if(pos+1 <= 100000) {
-            if(chk[pos+1] == 0) {
-                chk[pos+1] = 1;
-                sec[pos+1] = sec[pos]+1;
-                q.push(pos+1);
-                cnt[pos+1] = cnt[pos];
-            }
-            else if(sec[pos+1] == sec[pos]+1) cnt[pos+1] += cnt[pos];
-        }
-        if(pos*2 <= 100000) {
-            if(chk[pos*2] == 0) {
-                chk[pos*2] = 1;
-                sec[pos*2] = sec[pos]+1;
-                q.push(pos*2);
-                cnt[pos*2] = cnt[pos];
-            }
-            else if(sec[pos*2] == sec[pos]+1) cnt[pos*2] += cnt[pos];
         }
     }
-    //for(int i = 0; i <= k; i++) printf("%d", cnt[i]);
-    //printf("\n");
-    printf("%d\n%d", sec[k], cnt[k]);
+
+    cout << sec[k] << "\n" << cnt[k];
 }
