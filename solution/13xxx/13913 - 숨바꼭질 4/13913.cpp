@@ -1,54 +1,64 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <queue>
 using namespace std;
 
-int n, k, immi = 1234567890;
-int sec[222222], chk[222222], arr[222222];
-
-queue <int> q;
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
+#define MAX 222222
 
 int main() {
-    scanf("%d %d", &n, &k);
-    q.push(n);
-    sec[n] = 0;
-    chk[n] = 1;
-    while(q.empty() == 0) {
-        int pos = q.front();
-        q.pop();
-        if(pos-1 >= 0 && chk[pos-1] == 0) {
-            chk[pos-1] = 1;
-            sec[pos-1] = sec[pos]+1;
-            q.push(pos-1);
-            arr[pos-1] = pos;
-        }
-        if(pos+1 <= 100000 && chk[pos+1] == 0) {
-            chk[pos+1] = 1;
-            sec[pos+1] = sec[pos]+1;
-            q.push(pos+1);
-            arr[pos+1] = pos;
-        }
-        if(pos*2 <= 100000 && chk[pos*2] == 0) {
-            chk[pos*2] = 1;
-            sec[pos*2] = sec[pos]+1;
-            q.push(pos*2);
-            arr[pos*2] = pos;
-        }
-    }
-    /*for(int i = 1; i <= 50; i++) {
-        printf("%d ", arr[i]);
-        if(i%10==0) printf("\n");
-    }
-    printf("\n");*/
-    printf("%d\n", sec[k]);
+    FASTIO
 
-    stack <int> s;
-    s.push(k);
-    int h = k;
-    for(int i = 0; i < sec[k]; i++) {
-        s.push(arr[h]);
-        h = arr[h];
+    int n, k;
+
+    cin >> n >> k;
+
+    if(n == k) {
+        cout << 0 << "\n";
+        cout << n;
+        exit(0);
     }
-    for(int i = 0; i <= sec[k]; i++) {
-        printf("%d ", s.top());
-        s.pop();
+
+    int cnt = 0;
+    vector<int> check(MAX, -1);
+    queue<int> bfs;
+    bfs.push(n);
+
+    while(bfs.size()) {
+        int bfs_size = bfs.size();
+        cnt += 1;
+
+        for(int _ = 0; _ < bfs_size; _++) {
+            int now = bfs.front();
+            bfs.pop();
+
+            if(now-1 >= 0 && check[now-1] == -1) {
+                check[now-1] = now;
+                bfs.push(now-1);
+            }
+            if(now+1 <= 100000 && check[now+1] == -1) {
+                check[now+1] = now;
+                bfs.push(now+1);
+            }
+            if(now*2 <= 100000 && check[now*2] == -1) {
+                check[now*2] = now;
+                bfs.push(now*2);
+            }
+        }
+
+        if(check[k] != -1) break;
+    }
+
+    vector<int> result = {k};
+
+    while(n != k) {
+        k = check[k];
+        result.push_back(k);
+    }
+
+    cout << cnt << "\n";
+
+    for(int i = cnt; i >= 0; i--) {
+        cout << result[i] << " ";
     }
 }
