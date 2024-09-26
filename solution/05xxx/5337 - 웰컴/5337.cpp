@@ -1,8 +1,12 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
 
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
+
 int main() {
-    printf(".  .   .\n");
-    printf("|  | _ | _. _ ._ _  _\n");
-    printf("|/\\|(/.|(_.(_)[ | )(/.");
+    FASTIO
+
+    cout << ".  .   .\n";
+    cout << "|  | _ | _. _ ._ _  _\n";
+    cout << "|/\\|(/.|(_.(_)[ | )(/.";
 }
