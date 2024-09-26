@@ -1,33 +1,52 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 using namespace std;
 
-int arr1[103][103], arr2[103][103];
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
 
 int main() {
-    int n, m, a, b, cnt;
-    scanf("%d %d", &n, &m);
-    for(int i = 0; i < m; i++) {
-        scanf("%d %d", &a, &b);
-        arr1[a][b] = 1;
-        arr2[b][a] = 1;
+    FASTIO
+
+    int n, m;
+
+    cin >> n >> m;
+
+    int a, b;
+    vector<vector<vector<bool>>> v(2, vector<vector<bool>>(n+1, vector<bool>(n+1, false)));
+
+    for(int _ = 0; _ < m; _++) {
+        cin >> a >> b;
+
+        v[0][a][b] = true;
+        v[1][b][a] = true;
     }
 
     for(int k = 1; k <= n; k++) {
         for(int i = 1; i <= n; i++) {
             for(int j = 1; j <= n; j++) {
-                if(i == j || j == k || k == i) continue;
-                if(arr1[i][k] && arr1[k][j]) arr1[i][j] = 1;
-                if(arr2[i][k] && arr2[k][j]) arr2[i][j] = 1;
+                if(i == j || j == k || k == i) {
+                    continue;
+                }
+
+                for(int t = 0; t < 2; t++) {
+                    if(v[t][i][k] && v[t][k][j]) {
+                        v[t][i][j] = true;
+                    }
+                }
             }
         }
     }
 
     for(int i = 1; i <= n; i++) {
-        cnt = 0;
+        int cnt = 0;
+
         for(int j = 1; j <= n; j++) {
             if(i == j) continue;
-            if(arr1[i][j] == 0 && arr2[i][j] == 0) cnt = cnt + 1;
+            else if(!v[0][i][j] && !v[1][i][j]) {
+                cnt += 1;
+            }
         }
-        printf("%d\n", cnt);
+
+        cout << cnt << "\n";
     }
 }
