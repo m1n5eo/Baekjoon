@@ -1,35 +1,36 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <string>
+#include <stack>
 using namespace std;
 
-stack<char> st;
-
-void initialization() {
-    if(st.empty()) return;
-    st.pop();
-    initialization();
-}
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
 
 int main() {
-    int n;
-    char str[50];
-    scanf("%d", &n);
-    for(int i = 0; i < n; i++) {
-        int sw = 1;
-        scanf("%s", str);
-        int len = strlen(str);
-        for(int j = 0; j < len; j++) {
-            if(str[j] == '(') st.push('(');
-            else if(str[j] == ')') {
-                if(st.empty()) {
-                    printf("NO\n");
-                    sw = 0;
+    FASTIO
+
+    int tc;
+
+    cin >> tc;
+
+    for(int testcase = 0; testcase < tc; testcase++) {
+        string str;
+        stack<char> st;
+        bool stop_point = true;
+        
+        cin >> str;
+
+        for(char strs : str) {
+            if(strs == '(') st.push('(');
+            else {
+                if(st.size() == 0) {
+                    stop_point = false;
                     break;
                 }
-                st.pop();
+                else st.pop();
             }
         }
-        if(st.empty() && sw) printf("YES\n");
-        else if(sw) printf("NO\n");
-        initialization();
+
+        if(stop_point == true && st.size() == 0) cout << "YES" << "\n";
+        else cout << "NO" << "\n";
     }
 }
