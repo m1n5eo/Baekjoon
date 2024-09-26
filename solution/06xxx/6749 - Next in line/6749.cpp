@@ -1,8 +1,13 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
 
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
+
 int main() {
+    FASTIO
+    
     int y, m;
-    scanf("%d %d", &y, &m);
-    printf("%d", m+(m-y));
+
+    cin >> y >> m;
+    cout << m+(m-y);
 }
