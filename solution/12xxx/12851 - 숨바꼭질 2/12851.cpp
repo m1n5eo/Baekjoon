@@ -6,9 +6,9 @@ using namespace std;
 #define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
 #define MAX 222222
 
-int sec[222222], chk[222222], cnt[222222];
-
 int main() {
+    FASTIO
+
     int n, k;
 
     cin >> n >> k;
