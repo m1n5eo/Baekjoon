@@ -1,26 +1,39 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 using namespace std;
 
-int n, m;
-int arr[9], chk[9];
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
+#define MAX 11
 
-void f(int idx) {
+int n, m;
+vector<int> v(MAX, 0);
+vector<bool> check(MAX, 0);
+
+void backtracking(int idx) {
     if(idx == m) {
-        for(int i = 0; i < m; i++) printf("%d ", arr[i]);
-        printf("\n");
+        for(int i = 0; i < m; i++) {
+            cout << v[i] << " ";
+        }
+        cout << "\n";
         return;
     }
+
     for(int i = 1; i <= n; i++) {
-        if(chk[i] == 0) {
-            chk[i] = 1;
-            arr[idx] = i;
-            f(idx+1);
-            chk[i] = 0;
+        if(check[i] == false) {
+            check[i] = true;
+            v[idx] = i;
+            
+            backtracking(idx+1);
+
+            check[i] = false;
         }
     }
 }
 
 int main() {
-    scanf("%d %d", &n, &m);
-    f(0);
+    FASTIO
+
+    cin >> n >> m;
+
+    backtracking(0);
 }
