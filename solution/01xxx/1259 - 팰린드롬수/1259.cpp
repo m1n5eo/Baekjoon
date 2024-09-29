@@ -1,18 +1,28 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
 
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
+
 int main() {
-    int num, numSave, numReverse = 0;
-    scanf("%d", &num);
-    while(num != 0) {
-        numSave = num;
+    FASTIO
+
+    while(true) {
+        int num;
+
+        cin >> num;
+
+        if(num == 0) {
+            break;
+        }
+
+        int save = num, reverse = 0;
+
         while(num != 0) {
-            numReverse = numReverse*10+num%10;
+            reverse = reverse*10 + num%10;
             num /= 10;
         }
-        if(numSave == numReverse) printf("yes\n");
-        else printf("no\n");
-        scanf("%d", &num);
-        numReverse = 0;
+
+        if(save == reverse) cout << "yes" << "\n";
+        else if(save != reverse) cout << "no" << "\n";
     }
 }
