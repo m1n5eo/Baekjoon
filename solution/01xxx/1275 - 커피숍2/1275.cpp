@@ -1,41 +1,59 @@
-#include <stdio.h>
+#include <iostream>
 #include <algorithm>
+#include <vector>
 using namespace std;
 
-long long int n, m, x, y, a, b, arr[100001];
-long long int tree[4*100001];
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
+#define lli long long int
+#define MAX 111111
 
-long long init(long long int node, long long int start, long long int end) {
-    if(start == end) return tree[node] = arr[start];
-    long long int mid = (start+end)/2;
+lli n, m, x, y, a, b;
+vector<lli> v(MAX, 0), tree(MAX*4, 0);
+
+lli init(lli node, lli start, lli end) {
+    if(start == end) return tree[node] = v[start];
+
+    lli mid = (start+end)/2;
     return tree[node] = init(node*2, start, mid) + init(node*2+1, mid+1, end);
 }
 
-long long int sum(long long int node, long long int start, long long int end, long long int left, long long int right) {
-    if(start > right || end < left) return 0;
+lli segment(lli node, lli start, lli end, lli left, lli right) {
+    if(left > end || right < start) return 0;
     else if(left <= start && end <= right) return tree[node];
-    long long int mid = (start+end)/2;
-    return sum(node*2, start, mid, left, right) + sum(node*2+1, mid+1, end, left, right);
+
+    lli mid = (start+end)/2;
+    return segment(node*2, start, mid, left, right) + segment(node*2+1, mid+1, end, left, right);
 }
 
-void update(long long int node, long long int start, long long int end, long long int index, long long int dif) {
-    if(index < start || index > end) return;
-    tree[node] += dif;
-    if(start == end) return;
-    long long int mid = (start+end)/2;
-    update(node*2, start, mid, index, dif);
-    update(node*2+1, mid+1, end, index, dif);
+lli update(lli node, lli start, lli end, lli index, lli diff) {
+    if(index < start || index > end) return tree[node];
+    if(start == end) return tree[node] += diff;
+
+    lli mid = (start+end)/2;
+    return tree[node] = update(node*2, start, mid, index, diff) + update(node*2+1, mid+1, end, index, diff);
 }
 
 int main() {
-    scanf("%lld %lld", &n, &m);
-    for(int i = 1; i <= n; i++) scanf("%lld", &arr[i]);
+    FASTIO
+
+    cin >> n >> m;
+
+    for(int i = 1; i <= n; i++) {
+        cin >> v[i];
+    }
+
     init(1, 1, n);
+
     for(int i = 1; i <= m; i++) {
-        scanf("%lld %lld %lld %lld", &x, &y, &a, &b);
-        if(x > y) swap(x, y);
-        printf("%lld\n", sum(1, 1, n, x, y));
-        update(1, 1, n, a, b-arr[a]);
-        arr[a] = b;
+        cin >> x >> y >> a >> b;
+
+        if(x > y) {
+            swap(x, y);
+        }
+
+        cout << segment(1, 1, n, x, y) << "\n";
+
+        update(1, 1, n, a, b-v[a]);
+        v[a] = b;
     }
 }
