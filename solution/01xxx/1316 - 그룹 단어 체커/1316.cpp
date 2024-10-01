@@ -1,36 +1,34 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <string>
 using namespace std;
 
-int main() {
-    int n, sw, cnt = 0, check[33];
-    char ch[111];
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
+#define MAX 33
 
-    scanf("%d", &n);
-    for(int t = 0; t < n; t++) {
-        scanf("%s", ch);
-        int len = strlen(ch);
-        sw = 1;
-        for(int i = 0; i < 33; i++) check[i] = 0;
-        for(int i = 0; i < len; i++) {
-            if(!check[ch[i]-97]) {
-                check[ch[i]-97] = i+1;
-                sw = 1;
-                continue;
-            }
-            else {
-                if(check[ch[i]-97] == i) {
-                    check[ch[i]-97] = i+1;
-                    sw = 1;
-                    continue;
-                }
-                else {
-                    sw = 0;
-                    break;
-                }
-            }
+int main() {
+    FASTIO
+
+    int n, result = 0;
+
+    cin >> n;
+
+    for(int _ = 0; _ < n; _++) {
+        string word;
+        vector<bool> count(MAX, false);
+        bool stop = true;
+
+        cin >> word;
+
+        int word_size = word.size();
+
+        for(int i = 0; i < word_size && stop; i++) {
+            if(count[word[i]-'a'] == false) count[word[i]-'a'] = true;
+            else if(word[i]-'a' != word[i-1]-'a') stop = false;
         }
-        if(sw == 0) continue;
-        cnt = cnt + 1;
+
+        if(stop == true) result += 1;
     }
-    printf("%d", cnt);
+
+    cout << result;
 }
