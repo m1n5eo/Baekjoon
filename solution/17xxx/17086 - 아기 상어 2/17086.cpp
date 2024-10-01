@@ -1,47 +1,64 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 using namespace std;
 
-int n, m, arr[51][51];
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
+#define INF 1000000000
+#define MAX 55
 
-void dfs(int i, int j, int dist, int k) {
+int n, m;
+vector<vector<int>> v(MAX, vector<int>(MAX, 0));
+
+int dx[8] = {-1, 1, 0, 0, -1, -1, 1, 1};
+int dy[8] = {0, 0, -1, 1, -1, 1, -1, 1};
+
+void dfs(int i, int j, int dist) {
     if(i < 0 || i >= n || j < 0 || j >= m) return;
-    else if(arr[i][j] == -1 && dist != 0) return;
-    else if(arr[i][j] != 0 && arr[i][j] != -1 && dist >= arr[i][j]) return;
+    else if(v[i][j] == -1 && dist != 0) return;
+    else if(v[i][j] != 0 && v[i][j] != -1 && dist >= v[i][j]) return;
 
-    if(arr[i][j] != -1) arr[i][j] = dist;
-
-    dfs(i-1, j, dist+1, 1);
-    dfs(i+1, j, dist+1, 1);
-    dfs(i, j-1, dist+1, 1);
-    dfs(i, j+1, dist+1, 1);
-    dfs(i-1, j-1, dist+1, 1);
-    dfs(i-1, j+1, dist+1, 1);
-    dfs(i+1, j-1, dist+1, 1);
-    dfs(i+1, j+1, dist+1, 1);
+    if(v[i][j] != -1) {
+        v[i][j] = dist;
+    }
+    
+    for(int k = 0; k < 8; k++) {
+        int nx = i+dx[k];
+        int ny = j+dy[k];
+        
+        dfs(nx, ny, dist+1);
+    }
 }
 
 int main() {
-    scanf("%d %d", &n, &m);
-    for(int i = 0; i < n; i++) {
-        for(int j = 0; j < m; j++) {
-            scanf("%d", &arr[i][j]);
-            if(arr[i][j] == 1) arr[i][j] = -1; /// -1이 아기상어
-        }
-    }
+    FASTIO
+
+    cin >> n >> m;
 
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < m; j++) {
-            if(arr[i][j] == -1) {
-                dfs(i, j, 0, 0);
+            cin >> v[i][j];
+
+            if(v[i][j] == 1) {
+                v[i][j] = -1;
             }
         }
     }
 
-    int maxx = -1234567890;
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < m; j++) {
-            maxx = max(maxx, arr[i][j]);
+            if(v[i][j] == -1) {
+                dfs(i, j, 0);
+            }
         }
     }
-    printf("%d", maxx);
+
+    int result = -INF;
+
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < m; j++) {
+            result = max(v[i][j], result);
+        }
+    }
+    
+    cout << result;
 }
