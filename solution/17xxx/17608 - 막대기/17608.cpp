@@ -1,17 +1,31 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 using namespace std;
 
-int main() {
-    int n, arr[100001];
-    scanf("%d", &n);
-    for(int i = 0; i < n; i++) scanf("%d", &arr[i]);
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
+#define INF 1000000000
+#define MAX 111111
 
-    int maxx = -1234567890, cnt = 0;
+int main() {
+    FASTIO
+    
+    int n;
+    vector<int> v(MAX, 0);
+
+    cin >> n;
+
+    for(int i = 0; i < n; i++) {
+        cin >> v[i];
+    }
+
+    int big = -INF, cnt = 0;
+
     for(int i = n-1; i >= 0; i--) {
-        if(maxx < arr[i]) {
-            maxx = arr[i];
-            cnt++;
+        if(big < v[i]) {
+            big = v[i];
+            cnt += 1;
         }
     }
-    printf("%d", cnt);
+
+    cout << cnt;
 }
