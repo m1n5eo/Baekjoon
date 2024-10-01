@@ -1,9 +1,15 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
 
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
+
 int main() {
+    FASTIO
+
     int ax, ay, az, cx, cy, cz;
-    scanf("%d %d %d", &ax, &ay, &az);
-    scanf("%d %d %d", &cz, &cy, &cx);
-    printf("%d %d %d", cz-az, cy/ay, cx-ax);
+
+    cin >> ax >> ay >> az;
+    cin >> cz >> cy >> cx;
+
+    cout << cz-az << " " << cy/ay << " " << cx-ax;
 }
