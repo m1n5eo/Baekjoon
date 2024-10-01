@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include <algorithm>
-using namespace std;
 
 int main() {
     int n, k, LUD, LRL, arr[2][2];
