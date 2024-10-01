@@ -1,61 +1,69 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <utility>
+#include <string>
+#include <vector>
+#include <queue>
 using namespace std;
 
-#define fi first
-#define se second
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
+#define MAX 1111
 
-int n, m, t;
-int StartX, StartY, EndX, EndY;
-int arr[1001][1001], timee[1001][1001], chk[1001][1001];
-int dx[5] = {0, -1, 1, 0, 0},
-    dy[5] = {0, 0, 0, -1, 1}; // 0.상관X  1.위  2.아래  3.왼쪽  4.오른쪽
-
-queue<pair<int,int>> q;
+struct coordinate {
+    int x, y;
+};
 
 int main() {
-    char ch;
-    scanf("%d %d %d", &n, &m, &t);
+    int n, m, t;
+    string str;
+    coordinate start, end;
+    vector<vector<int>> v(MAX, vector<int>(MAX, 0)), time(MAX, vector<int>(MAX, 0));
+    queue<coordinate> bfs;
+
+    int dx[5] = {0, -1, 1, 0, 0},
+        dy[5] = {0, 0, 0, -1, 1};
+
+    cin >> n >> m >> t;
+
     for(int i = 1; i <= n; i++) {
-        for(int j = 1; j <= m; j++) {
-            scanf(" %c", &ch);
-            if(ch == '.') arr[i][j] = 0; // 빈칸
-            else arr[i][j] = -1; // 벽
+        cin >> str;
+
+        for(int j = 0; j < m; j++) {
+            if(str[j] == '.') v[i][j+1] = 0;
+            else v[i][j+1] = -1;
         }
     }
-    scanf("%d %d %d %d", &StartX, &StartY, &EndX, &EndY);
 
-    int x = StartX, y = StartY;
-    q.push({x, y});
-    timee[x][y] = 0;
-    chk[x][y] = 0;
+    cin >> start.x >> start.y >> end.x >> end.y;
 
-    while(!q.empty()) {
-        x = q.front().fi, y = q.front().se;
-        q.pop();
+    bfs.push(start);
+    time[start.x][start.y] = 0;
+
+    while(bfs.size()) {
+        coordinate now = bfs.front();
+        bfs.pop();
+
         for(int k = 1; k <= 4; k++) {
             for(int i = 1; i <= t; i++) {
-                int nx = x+dx[k]*i, ny = y+dy[k]*i;
-                if(nx > 0 && nx <= n && ny > 0 && ny <= m) {
-                    if(arr[nx][ny] == 0 && timee[nx][ny] == 0) {
-                        q.push({nx, ny});
-                        timee[nx][ny] = timee[x][y]+1;
+                coordinate next = {now.x+dx[k]*i, now.y+dy[k]*i};
+
+                if(0 < next.x && next.x <= n && 0 < next.y && next.y <= m) {
+                    if(v[next.x][next.y] == 0 && time[next.x][next.y] == 0) {
+                        bfs.push(next);
+                        time[next.x][next.y] = time[now.x][now.y]+1;
                     }
-                    else if(arr[nx][ny] == 0 && timee[nx][ny] == timee[x][y]+1) continue;
+                    else if(v[next.x][next.y] == 0 && time[next.x][next.y] == time[now.x][now.y]+1) {
+                        continue;
+                    }
                     else break;
                 }
             }
         }
-        if(x == EndX && y == EndY) break;
-    }
 
-    /*for(int i = 1; i <= n; i++) {
-        for(int j = 1; j <= m; j++) {
-            printf("%d ", timee[i][j]);
+        if(now.x == end.x && now.y == end.y) {
+            break;
         }
-        printf("\n");
     }
-    printf("\n");*/
 
-    if(timee[EndX][EndY] == 0) printf("-1");
-    else printf("%d", timee[EndX][EndY]);
+    if(time[end.x][end.y] == 0) cout << -1;
+    else cout << time[end.x][end.y];
 }
