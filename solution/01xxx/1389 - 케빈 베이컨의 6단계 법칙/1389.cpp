@@ -1,38 +1,50 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 using namespace std;
 
-int fri[103][103];
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
+#define INF 1000000000
+#define MAX 111
 
 int main() {
-    int n, m, a, b, idx, sum = 0, minn = 1000000003;
-    scanf("%d %d", &n, &m);
-    for(int i = 0; i < m; i++) {
-        scanf("%d %d", &a, &b);
-        fri[a][b] = 1;
-        fri[b][a] = 1;
+    FASTIO
+
+    int n, m, a, b, result = INF, idx;
+    vector<vector<int>> graph(MAX, vector<int>(MAX, INF));
+
+    cin >> n >> m;
+
+    for(int _ = 0; _ < m; _++) {
+        cin >> a >> b;
+
+        graph[a][b] = 1;
+        graph[b][a] = 1;
     }
 
     for(int k = 1; k <= n; k++) {
         for(int i = 1; i <= n; i++) {
             for(int j = 1; j <= n; j++) {
-                if(fri[i][k] && fri[k][j]) {
-                    if(fri[i][j] == 0) fri[i][j] = fri[i][k] + fri[k][j];
-                    else if(fri[i][j] > fri[i][k] + fri[k][j]) fri[i][j] = fri[i][k] + fri[k][j];
-                }
+                graph[i][j] = min(graph[i][k] + graph[k][j], graph[i][j]);
             }
         }
     }
 
     for(int i = 1; i <= n; i++) {
+        int sum = 0;
+
         for(int j = 1; j <= n; j++) {
-            sum = sum + fri[i][j];
+            if(graph[i][j] != INF) {
+                sum += graph[i][j];
+            }
         }
-        sum = sum - fri[i][i];
-        if(minn > sum) {
-            minn = sum;
+
+        sum -= graph[i][i];
+
+        if(result > sum) {
+            result = sum;
             idx = i;
         }
-        sum = 0;
     }
-    printf("%d", idx);
+
+    cout << idx;
 }
