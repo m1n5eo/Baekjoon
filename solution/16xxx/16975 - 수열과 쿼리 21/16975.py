@@ -35,16 +35,16 @@ def update(start, end, node, left, right, value):
     update(mid+1, end, node*2+1, left, right, value)
     tree[node] = tree[node*2] + tree[node*2+1]
 
-def segment(start, end, node, left, right):
+def segment(start, end, node, index):
     updateLazy(start, end, node)
 
-    if end < left or right < start:
+    if end < index or index < start:
         return 0
-    elif left <= start and end <= right:
+    elif index <= start and end <= index:
         return tree[node]
     
     mid = (start + end) // 2
-    return segment(start, mid, node*2, left, right) + segment(mid+1, end, node*2+1, left, right)
+    return segment(start, mid, node*2, index) + segment(mid+1, end, node*2+1, index)
 
 n = int(input())
 array = [0] + list(map(int, input().split()))
@@ -60,7 +60,7 @@ for _ in range(int(input())):
     if query[0] == 1:
         update(1, n, 1, query[1], query[2], query[3])
     elif query[0] == 2:
-        result.append(segment(1, n, 1, query[1], query[1]))
+        result.append(segment(1, n, 1, query[1]))
 
 for r in result:
     print(r)
