@@ -1,30 +1,26 @@
 #include <iostream>
 #include <vector>
 #include <queue>
-#include <utility>
 using namespace std;
 
-#define NUM 22222
-
-int n, m, s, dist[NUM];
-vector<pair<int, int>> node[NUM];
-priority_queue<pair<int, int>> pq;
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
+#define pii pair<int, int>
+#define INF 1234567890
+#define MAX 22222
 
 int main() {
-    cin.tie(NULL); cout.tie(NULL);
-    ios::sync_with_stdio(false);
+	FASTIO
+
+	int n, m, s, a, b, d;
+	vector<int> dist(MAX, INF);
+	vector<vector<pii>> node(MAX, vector<pii>(0));
+	priority_queue<pii> pq;
 
     cin >> n >> m >> s;
+
     for(int i = 0; i < m; i++) {
-        int a, b, d;
-
         cin >> a >> b >> d;
-
         node[a].push_back({b, d});
-    }
-
-    for(int i = 1; i <= n; i++) {
-        dist[i] = 1234567890;
     }
 
     pq.push({0, s});
@@ -54,7 +50,7 @@ int main() {
 
     for(int i = 1; i <= n; i++) {
         if(i == s) cout << 0 << "\n";
-        else if(dist[i] == 1234567890) cout << "INF" << "\n";
+        else if(dist[i] == INF) cout << "INF" << "\n";
         else cout << dist[i] << "\n";
     }
 
