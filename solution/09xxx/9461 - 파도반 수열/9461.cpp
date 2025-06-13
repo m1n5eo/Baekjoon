@@ -1,16 +1,23 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 using namespace std;
 
-int main() {
-    long long int arr[101] = {0, 1, 1, 1, };
-    for(int i = 4; i <= 100; i++) {
-        arr[i] = arr[i-2] + arr[i-3];
-    }
+#define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
+#define lli long long int
 
-    int n, t;
-    scanf("%d", &t);
-    for(int i = 0; i < t; i++) {
-        scanf("%d", &n);
-        printf("%lld\n", arr[n]);
-    }
+int main() {
+	FASTIO
+
+	int t, n;
+	vector<lli> triangle = {0, 1, 1, 1, 2};
+	
+	for(int i = 5; i <= 100; i++) {
+		triangle.push_back(triangle[i-1] + triangle[i-5]);
+	}
+
+	cin >> t;
+	for(int _ = 0; _ < t; _++) {
+		cin >> n;
+		cout << triangle[n] << " ";
+	}
 }
