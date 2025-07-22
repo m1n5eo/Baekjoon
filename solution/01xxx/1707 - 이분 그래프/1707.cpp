@@ -11,7 +11,7 @@ int t, n, m, u, v;
 vector<vector<int>> graph;
 vector<int> color;
 
-string search(int index) {
+bool search(int index) {
 	queue<int> bfs;
 	bfs.push(index);
 	color[index] = 0;
@@ -26,15 +26,14 @@ string search(int index) {
 				bfs.push(graph[now][i]);
 				color[graph[now][i]] = 1-color[now];
 			}
-			else if(color[graph[now][i]] + color[now] != 1) return "NO";
+			else if(color[graph[now][i]] + color[now] != 1) return false;
 		}
 	}
-	return "YES";
+	return true;
 }
 
 string solve() {
-	string ret;
-	for(int i = 1; i <= n; i++) if(color[i] == -1 && search(i) == "NO") return "NO";
+	for(int i = 1; i <= n; i++) if(color[i] == -1 && !search(i)) return "NO";
 	return "YES";
 }
 
