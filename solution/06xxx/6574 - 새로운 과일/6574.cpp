@@ -36,25 +36,14 @@ string solve() {
 	int i = 1, j = 1; k = 0;
 	as = a.size(); bs = b.size();
 	while(i < as && j < bs) {
-		if(k < dp[as-1][bs-1] && a[i] != b[j] && a[i] == LCS[k]) {
-			ret += b[j];
-			j += 1;
-		}
-		else if(k < dp[as-1][bs-1] && a[i] != b[j] && b[j] == LCS[k]) {
-			ret += a[i];
-			i += 1;
-		}
+		if(k < dp[as-1][bs-1] && a[i] != b[j] && a[i] == LCS[k]) ret += b[j++];
+		else if(k < dp[as-1][bs-1] && a[i] != b[j] && b[j] == LCS[k]) ret += a[i++];
 		else if(k < dp[as-1][bs-1] && a[i] == b[j] && b[j] == LCS[k]) {
-			ret = ret + LCS[k];
-			i += 1;
-			j += 1;
-			k += 1;
-		}
-		else {
-			ret = ret + a[i] + b[j];
+			ret = ret + LCS[k++];
 			i += 1;
 			j += 1;
 		}
+		else ret = ret + a[i++] + b[j++];
 	}
 	while(i < as) ret += a[i++];
 	while(j < bs) ret += b[j++];
