@@ -4,48 +4,39 @@ using namespace std;
 
 #define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
 #define lli long long int
-#define INF 1234567890123456
+#define INF 1234567890987654321
+#define MAX 555
 
 struct type {
-    lli start, end, cost;
+	lli start, end, time;
 };
 
+lli n, m, a, b, c;
+vector<type> bus;
+
+vector<lli> solve() {
+	vector<lli> dist(MAX, INF), ret;
+	dist[1] = 0;
+	for(lli round = 0; round < n; round++) {
+		for(lli i = 0; i < m; i++) {
+			type now = bus[i];
+			if(dist[now.start] != INF && dist[now.end] > dist[now.start] + now.time) {
+				dist[now.end] = dist[now.start] + now.time;
+				if(round == n-1) return {-1};
+			}
+		}
+	}
+	for(lli i = 2; i <= n; i++) ret.push_back(dist[i] != INF? dist[i] : -1);
+	return ret;
+}
+
 int main() {
-    FASTIO
+	FASTIO
 
-    lli n, m, a, b, c;
-
-    cin >> n >> m;
-
-    vector<lli> distance(n+1, INF);
-    vector<type> route;
-
-    for(lli _ = 0; _ < m; _++) {
-        cin >> a >> b >> c;
-        route.push_back({a, b, c});
-    }
-
-    distance[1] = 0;
-
-    for(lli round = 0; round < n; round++) {
-        for(lli i = 0; i < m; i++) {
-            lli now = route[i].start;
-            lli next = route[i].end;
-            lli Cost = route[i].cost;
-
-            if(distance[now] != INF && distance[next] > distance[now] + Cost) {
-                distance[next] = distance[now] + Cost;
-
-                if(round == n-1) {
-                    cout << -1;
-                    exit(0);
-                }
-            }
-        }
-    }
-
-    for(lli i = 2; i <= n; i++) {
-        if(distance[i] != INF) cout << distance[i] << "\n";
-        else cout << -1 << "\n";
-    }
+	cin >> n >> m;
+	for(lli i = 0; i < m; i++) {
+		cin >> a >> b >> c;
+		bus.push_back({a, b, c});
+	}
+	for(lli s : solve()) cout << s << "\n";
 }
