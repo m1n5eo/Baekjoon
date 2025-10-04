@@ -29,9 +29,8 @@ vector<int> solve() {
     // cout << "\n";
 
     vector<pair<int, vector<int>>> dp(n);
-    dp[0] = {block[0].height, {block[0].index}};
-    int m = dp[0].first, idx = 0;
-    for(int i = 1; i < n; i++) {
+    int m = 0, idx = -1;
+    for(int i = 0; i < n; i++) {
         dp[i] = {block[i].height, {block[i].index}};
         for(int j = 0; j < i; j++) {
             if(block[i].weight >= block[j].weight) {
