@@ -4,14 +4,6 @@
 using namespace std;
 
 #define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
-#define INF 1234567890
-#define MAX 111
-
-struct compare {
-    bool operator()(pair<pair<int, int>, int> a, pair<pair<int, int>, int> b) {
-        return a.second > b.second;
-    }
-};
 
 int solve() {
     int n, m, x, y, a, b;
@@ -53,19 +45,11 @@ int solve() {
         }
     }
 
-    // cout << "\n" << "on.second" << "\n";
-    // for(int i = 1; i <= n; i++) {
-    //     for(int j = 1; j <= n; j++) {
-    //         cout << on[i][j].second << " ";
-    //     }
-    //     cout << "\n";
-    // }
-    // cout << "\n";
-
     int ret = 0;
     for(int i = 1; i <= n; i++)
         for(int j = 1; j <= n; j++)
-            if(on[i][j].first == true) ret += 1;
+            if(on[i][j].first == true)
+                ret += 1;
     return ret;
 }
 
