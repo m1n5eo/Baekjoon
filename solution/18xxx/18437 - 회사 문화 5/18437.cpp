@@ -6,7 +6,7 @@ using namespace std;
 #define MAX 100001
 
 int n, m, cnt = 0;
-vector<int> init_parent(MAX, 0), tree(MAX*4, 0), lazy(MAX*4, 0);
+vector<int> tree(MAX*4, 0), lazy(MAX*4, 0);
 vector<vector<int>> graph(MAX, vector<int>(0));
 vector<pair<int, int>> range(MAX, {-1, -1});
 
