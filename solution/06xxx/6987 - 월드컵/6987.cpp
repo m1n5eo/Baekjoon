@@ -15,25 +15,19 @@ void backtracking(int x, int y, int cnt) {
     }
 
     if(vec[x][0] != 0 && vec[y][2] != 0) {
-        vec[x][0] -= 1;
-        vec[y][2] -= 1;
+        vec[x][0] -= 1; vec[y][2] -= 1;
         backtracking(y != 5? x:x+1, y != 5? y+1:x+2, cnt-1);
-        vec[x][0] += 1;
-        vec[y][2] += 1;
+        vec[x][0] += 1; vec[y][2] += 1;
     }
     if(vec[x][1] != 0 && vec[y][1] != 0) {
-        vec[x][1] -= 1;
-        vec[y][1] -= 1;
+        vec[x][1] -= 1; vec[y][1] -= 1;
         backtracking(y != 5? x:x+1, y != 5? y+1:x+2, cnt-1);
-        vec[x][1] += 1;
-        vec[y][1] += 1;
+        vec[x][1] += 1; vec[y][1] += 1;
     }
     if(vec[x][2] != 0 && vec[y][0] != 0) {
-        vec[x][2] -= 1;
-        vec[y][0] -= 1;
+        vec[x][2] -= 1; vec[y][0] -= 1;
         backtracking(y != 5? x:x+1, y != 5? y+1:x+2, cnt-1);
-        vec[x][2] += 1;
-        vec[y][0] += 1;
+        vec[x][2] += 1; vec[y][0] += 1;
     }
 }
 
