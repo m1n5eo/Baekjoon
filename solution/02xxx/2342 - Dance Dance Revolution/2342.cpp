@@ -27,7 +27,6 @@ int solution() {
     vector<vector<int>> dp(n, vector<int>(25, INF));
     dp[0][0] = 0;
     for(int i = 1; i < n; i++) {
-        int k = ddr[i];
         for(int j = 0; j < 25; j++) {
             if(dp[i-1][j] != INF) {
                 if(ddr[i] != right(j)) dp[i][cal(ddr[i], right(j))] = min(dp[i][cal(ddr[i], right(j))], dp[i-1][j] + move(left(j), ddr[i]));
