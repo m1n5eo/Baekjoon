@@ -6,9 +6,7 @@ using namespace std;
 #define FASTIO cin.tie(NULL); cout.tie(NULL); ios::sync_with_stdio(false);
 
 vector<int> solution() {
-    int n;
-    cin >> n;
-
+    int n; cin >> n;
     vector<int> result;
     int left = 1, right = 2;
     while((left+1)*(left+1) - left*left <= n) {
